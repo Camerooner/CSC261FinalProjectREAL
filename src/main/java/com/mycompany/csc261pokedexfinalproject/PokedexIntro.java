@@ -11,19 +11,24 @@ import javax.swing.JTabbedPane;
 
 /**
  *
- * @author Cameron
+ * @author Cam
  */
+
 public class PokedexIntro extends javax.swing.JFrame {
+    
+    private AudioPlayer audioPlayer;
 
     /**
      * Creates new form PokedexIntro
      */
+    
     public PokedexIntro() {
         initComponents();
         getContentPane().setBackground(new java.awt.Color(217, 76, 56)); // Set the background color of the content pane
         setTitle("Pokédex Application");
         setResizable(false); // Non-resizable window
         setLocationRelativeTo(null); // Center window
+        audioPlayer = new AudioPlayer();
     }
 
     /**
@@ -79,6 +84,8 @@ public class PokedexIntro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void pokedexEnterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pokedexEnterButtonActionPerformed
+        audioPlayer.playButtonSound("A Button BW.wav");
+
         // Main tabbed pane
         JTabbedPane tabbedPane = new JTabbedPane();
 
@@ -98,10 +105,10 @@ public class PokedexIntro extends javax.swing.JFrame {
     }//GEN-LAST:event_pokedexEnterButtonActionPerformed
 
     
-    
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

@@ -6,8 +6,9 @@ package com.mycompany.csc261pokedexfinalproject;
 
 /**
  *
- * @author Cameron
+ * @author Cam
  */
+
 public class GameServer {
     
 }

@@ -11,8 +11,9 @@ import java.util.List;
 
 /**
  *
- * @author Cameron
+ * @author Cam
  */
+
 public class TypeEffectiveness {
     
     private static final HashMap<String, List<String>> strengths = new HashMap<>();

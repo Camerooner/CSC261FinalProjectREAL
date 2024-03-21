@@ -11,8 +11,9 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Cameron
+ * @author Cam
  */
+
 public class PokedexApp {
 
     public static int id;
