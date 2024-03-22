@@ -159,8 +159,8 @@ public class PokedexGUI extends javax.swing.JPanel {
             case "Gen 6": return new int[]{650, 721};  // Range for Generation 6 Pokémon
             case "Gen 7": return new int[]{722, 809};  // Range for Generation 7 Pokémon
             case "Gen 8": return new int[]{810, 905};  // Range for Generation 8 Pokémon
-            case "Gen 9": return new int[]{906, 1024};  // Range for Generation 9 Pokémon
-            default: return new int[]{1, 1024}; // Defaults to All generations
+            case "Gen 9": return new int[]{906, 1025};  // Range for Generation 9 Pokémon
+            default: return new int[]{1, 1025}; // Defaults to All generations
         }
     }
     
@@ -203,15 +203,6 @@ public class PokedexGUI extends javax.swing.JPanel {
         pokemonNameLabel.setEditable(false);
         pokemonTypeTextField.setEditable(false);
         pokemonInfoText.setEditable(false);
-    }
-    
-    private void setPokemonImage(String spriteUrl) {
-        try {
-            BufferedImage originalImage = ImageIO.read(new URL(spriteUrl));
-            updateImage(originalImage);
-        } catch (IOException ex) {
-            Logger.getLogger(PokedexGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
     /**
@@ -409,9 +400,9 @@ public class PokedexGUI extends javax.swing.JPanel {
                                                 .addGroup(layout.createSequentialGroup()
                                                     .addGap(6, 6, 6)
                                                     .addComponent(weaknessesLabel))
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(strengthsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addGap(6, 6, 6)
+                                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGroup(layout.createSequentialGroup()
                                                     .addGap(6, 6, 6)
                                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -425,7 +416,11 @@ public class PokedexGUI extends javax.swing.JPanel {
                                                 .addGap(23, 23, 23))))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addComponent(shinyCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addContainerGap())))))))
+                                        .addContainerGap())))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(strengthsLabel)
+                                .addGap(13, 13, 13))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -576,7 +571,6 @@ public class PokedexGUI extends javax.swing.JPanel {
     private void pokemonTypeTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pokemonTypeTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_pokemonTypeTextFieldActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel abilitiesLabel;
