@@ -54,12 +54,21 @@ public class PokemonQuiz extends javax.swing.JPanel {
         int pokemonId = random.nextInt(1025) + 1;
         return PokedexApp.fetchPokemonDetailsById(pokemonId);
     }
+    
+    private String capitalizeFirstLetter(String input) { // This code is repeated and I wanna try and use the method I already defined in PokedexGUI instead
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+        return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
+    }
 
     private void displayInitialPokemonInfo(Pokemon pokemon) {
         if (pokemon != null) {
-            typeInfoField.setText(String.join(", ", pokemon.getTypes().stream()
-                    .map(type -> type.getType().getName())
-                    .collect(Collectors.toList())));
+            // Capitalize each type and join with comma
+            String capitalizedTypes = pokemon.getTypes().stream()
+                    .map(type -> capitalizeFirstLetter(type.getType().getName()))
+                    .collect(Collectors.joining(", "));
+            typeInfoField.setText(capitalizedTypes);
             generationInfoField.setText("Gen " + calculateGeneration(pokemon.getId()));
             weightInfoField.setText(""); // Clear the text field, so it doesn't show yet
             bstInfoField.setText("");
@@ -93,21 +102,26 @@ public class PokemonQuiz extends javax.swing.JPanel {
 
     private void updateInfoFieldsBasedOnGuesses() {
         if (remainingGuesses == 2) {
-            weightInfoField.setText(currentPokemon.getWeight() + " lbs"); // Show weight after first wrong guess
+            weightInfoField.setText(currentPokemon.getWeight() + " lbs"); // Shows weight after first wrong guess
         } else if (remainingGuesses == 1) {
-            bstInfoField.setText(String.valueOf(calculateBST(currentPokemon))); // Show BST after second wrong guess
+            bstInfoField.setText(String.valueOf(calculateBST(currentPokemon))); // Shows BST after second wrong guess
         }
         if (remainingGuesses == 0) {
-            revealPokemon(); // Show all info if no guesses left
+            revealPokemon(); // Shows all info if no guesses left
         }
     }
 
     private void revealPokemon() {
-        finalPokemonLabel.setText("The Pokémon was: " + currentPokemon.getName());
+        // Capitalize the first letter of the Pokémon's name
+        finalPokemonLabel.setText("The Pokémon was: " + capitalizeFirstLetter(currentPokemon.getName()));
         finalPokemonLabel.setVisible(true);
-        typeInfoField.setText(String.join(", ", currentPokemon.getTypes().stream()
-                .map(type -> type.getType().getName())
-                .collect(Collectors.toList())));
+
+        // Capitalize each type for the final reveal
+        String capitalizedTypes = currentPokemon.getTypes().stream()
+                .map(type -> capitalizeFirstLetter(type.getType().getName()))
+                .collect(Collectors.joining(", "));
+        typeInfoField.setText(capitalizedTypes);
+
         weightInfoField.setText(currentPokemon.getWeight() + " lbs");
         bstInfoField.setText(String.valueOf(calculateBST(currentPokemon)));
 

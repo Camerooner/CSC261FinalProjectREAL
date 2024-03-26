@@ -42,6 +42,8 @@ public class PokedexGUI extends javax.swing.JPanel {
         if (pokemon != null) {
             currentPokemon = pokemon;
             pokemonNameLabel.setText(pokemon.getName());
+            pokemonNameLabel.setText(capitalizeFirstLetter(pokemon.getName()));  // Capitalize the Pokemon's name
+
 
             // Convert the types to a List<String> directly
             List<String> types = pokemon.getTypes().stream()
@@ -49,27 +51,36 @@ public class PokedexGUI extends javax.swing.JPanel {
                                         .collect(Collectors.toList());
             pokemonTypeTextField.setText(String.join(", ", types));
             
+            String capitalizedTypes = types.stream()
+                    .map(this::capitalizeFirstLetter)
+                    .collect(Collectors.joining(", "));
+            pokemonTypeTextField.setText(capitalizedTypes); // Set capitalized types string
+            
             // Calculate BST
             int bst = pokemon.getStats().stream()
                              .mapToInt(stat -> stat.getBaseStat())
                              .sum();
 
-            pokemonInfoText.setText("BST (Base Stat Total): " + bst + "\n" +
-                                    "Height: " + pokemon.getHeight() + " meters" + "\n" +
-                                    "Weight: " + pokemon.getWeight() + " lbs" + "\n"+
-                                    "Base Experience: " + pokemon.getBaseExperience());  // Add BST info
+            double weightInKilograms = pokemon.getWeight() * 0.1; // Converts hectograms to kilograms
+            double weightInPounds = weightInKilograms * 2.20462; // Converts kilograms to pounds
+            pokemonInfoText.setText("BST (Base Stat Total): " + bst + "\n" // Adds BST info
+                    + "Height: " + pokemon.getHeight() + " meters" + "\n"
+                    + "Weight: " + String.format("%.1f", weightInPounds) + " lbs" + "\n"
+                    + "Base Experience: " + pokemon.getBaseExperience());
 
             // Update the type effectiveness lists based on the Pokémon's types
             updateTypeEffectivenessLists(types);
 
-            // Displays the Pokemons moves
+            // Display the Pokémon's moves and capitalize each move name
             DefaultListModel<String> movesModel = new DefaultListModel<>();
-            pokemon.getMoves().forEach(move -> movesModel.addElement(move.getMove().getName()));
+            pokemon.getMoves().forEach(move
+                    -> movesModel.addElement(capitalizeFirstLetter(move.getMove().getName())));
             movesLearnedList.setModel(movesModel);
 
-            // Displays the Pokemons abilities
+            // Display the Pokémon's abilities and capitalize each ability name
             DefaultListModel<String> abilitiesModel = new DefaultListModel<>();
-            pokemon.getAbilities().forEach(ability -> abilitiesModel.addElement(ability.getAbility().getName()));
+            pokemon.getAbilities().forEach(ability
+                    -> abilitiesModel.addElement(capitalizeFirstLetter(ability.getAbility().getName())));
             abilitiesList.setModel(abilitiesModel);
 
             // Displays the sprite based on if the shiny option is checked or not
@@ -162,6 +173,13 @@ public class PokedexGUI extends javax.swing.JPanel {
             case "Gen 9": return new int[]{906, 1025};  // Range for Generation 9 Pokémon
             default: return new int[]{1, 1025}; // Defaults to All generations
         }
+    }
+    
+    private String capitalizeFirstLetter(String input) {
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+        return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
     }
     
     private void performSearch(String pokemonName) {
@@ -386,7 +404,7 @@ public class PokedexGUI extends javax.swing.JPanel {
                                         .addGap(72, 72, 72)
                                         .addComponent(pokemonImage, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 19, Short.MAX_VALUE))
-                                    .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING))
+                                    .addComponent(jScrollPane6))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
@@ -418,7 +436,6 @@ public class PokedexGUI extends javax.swing.JPanel {
                                         .addComponent(shinyCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addContainerGap())))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(strengthsLabel)
                                 .addGap(13, 13, 13))))))
         );
@@ -465,7 +482,9 @@ public class PokedexGUI extends javax.swing.JPanel {
                                 .addComponent(pokemonImage, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(3, 3, 3)))
                 .addGap(8, 8, 8)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(musicButton)
@@ -483,7 +502,7 @@ public class PokedexGUI extends javax.swing.JPanel {
         audioPlayer.playButtonSound("A Button BW.wav");
         JOptionPane.showMessageDialog(this,
                 "Welcome to the Pokédex! Here's how to get started:\n\n"
-                + "1. Searching for Pokémon: Use the search bar to search for any Pokémon!.\n"
+                + "1. Searching for Pokémon: Use the search bar to search for any Pokémon!\n"
                 + "2. For Pokémon with multiple forms, e.g. Zygarde or Lycanroc, type in the search bar: 'Zygarde-complete' and 'lycanroc-midnight', so the type of form is notated after a dash.\n"
                 + "3. Pokémon info: When a valid Pokémon is searched, displaying information about that Pokémon will appear.\n"
                 + "4. Use the Next and Previous Pokémon button to see the next or last Pokémon in Pokédex order.\n"
